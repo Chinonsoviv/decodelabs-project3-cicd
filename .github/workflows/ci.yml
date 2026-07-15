@@ -37,3 +37,26 @@ jobs:
 
       - name: Build success
         run: echo "All tests passed. Pipeline complete."
+
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu
+            git clone https://github.com/Chinonsoviv/decodelabs-project3-cicd.git app || true
+            cd app
+            git pull origin main
+            python3 src/app.py
+            echo "Deployment complete"
