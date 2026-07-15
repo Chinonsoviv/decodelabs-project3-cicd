@@ -1,4 +1,4 @@
-cat > README.md << 'EOF'
+
 # DecodeLabs Project 3, CI/CD Pipeline with Flask Deployment
 
 A fully automated CI/CD pipeline built with GitHub Actions that deploys a live Flask web application to AWS EC2 on every git push, with zero manual intervention.
