@@ -48,12 +48,11 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            sudo apt install python3-pip -y
-            sudo pip3 install flask
-            cd /home/ubuntu
-            git clone https://github.com/Chinonsoviv/decodelabs-project3-cicd.git app || true
-            cd app
+            cd /home/ubuntu/app || git clone https://github.com/Chinonsoviv/decodelabs-project3-cicd.git /home/ubuntu/app
+            cd /home/ubuntu/app
             git pull origin main
-            sudo pkill -f "python3 src/app.py" || true
-            sudo nohup python3 src/app.py &
+            sudo apt install python3-flask -y
+            sudo fuser -k 80/tcp || true
+            nohup sudo python3 src/app.py > /home/ubuntu/app.log 2>&1 &
+            sleep 3
             echo "Deployment complete"
